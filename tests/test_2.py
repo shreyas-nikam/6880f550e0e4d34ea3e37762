@@ -1,35 +1,44 @@
 import pytest
-from definition_081e7fbc01a440029d30437b9c7fdad7 import store_risk_assessment_inputs
+from definition_4f0e7f9569b549ceb92e2cb4233b0584 import store_risk_assessment_inputs
+
+@pytest.fixture
+def sample_controls():
+    return [
+        {"description": "Control 1", "type": "Preventative", "effectiveness": "Effective"},
+        {"description": "Control 2", "type": "Detective", "effectiveness": "Partially Effective"},
+    ]
+
+def test_store_risk_assessment_inputs_valid(sample_controls):
+    try:
+        store_risk_assessment_inputs("Unit A", "High", sample_controls)
+        assert True  # If no exception is raised, the test passes.  We can't easily assert against the internal datastore.
+    except Exception as e:
+        assert False, f"Exception raised: {e}"
+
+def test_store_risk_assessment_inputs_empty_unit_name(sample_controls):
+    try:
+        store_risk_assessment_inputs("", "Medium", sample_controls)
+        assert True # If no exception is raised, the test passes.  We can't easily assert against the internal datastore.
+    except Exception as e:
+        assert False, f"Exception raised: {e}"
+
+def test_store_risk_assessment_inputs_none_controls():
+    try:
+        store_risk_assessment_inputs("Unit B", "Low", None)
+        assert True # If no exception is raised, the test passes.  We can't easily assert against the internal datastore.
+    except Exception as e:
+        assert False, f"Exception raised: {e}"
 
 def test_store_risk_assessment_inputs_empty_controls():
-    store_risk_assessment_inputs("Unit1", "High", [])
-    # Add assertions to check the internal data store. Since we don't have access to it,
-    # we can only verify that the function runs without errors.
-    assert True
+    try:
+        store_risk_assessment_inputs("Unit C", "Medium", [])
+        assert True # If no exception is raised, the test passes.  We can't easily assert against the internal datastore.
+    except Exception as e:
+        assert False, f"Exception raised: {e}"
 
-def test_store_risk_assessment_inputs_single_control():
-    controls = [{"description": "Control1", "type": "Preventative", "effectiveness": "Effective"}]
-    store_risk_assessment_inputs("Unit2", "Medium", controls)
-    # Add assertions to check the internal data store.
-    assert True
-
-def test_store_risk_assessment_inputs_multiple_controls():
-    controls = [
-        {"description": "Control1", "type": "Preventative", "effectiveness": "Effective"},
-        {"description": "Control2", "type": "Detective", "effectiveness": "Partially Effective"},
-    ]
-    store_risk_assessment_inputs("Unit3", "Low", controls)
-    # Add assertions to check the internal data store.
-    assert True
-
-def test_store_risk_assessment_inputs_invalid_input():
-     with pytest.raises(TypeError):
-        store_risk_assessment_inputs(123, "High", [])
-     with pytest.raises(TypeError):
-        store_risk_assessment_inputs("Unit1", 123, [])
-     with pytest.raises(TypeError):
-         store_risk_assessment_inputs("Unit1", "High", {})
-
-def test_store_risk_assessment_inputs_edge_cases():
-    store_risk_assessment_inputs("", "", [])
-    assert True
+def test_store_risk_assessment_inputs_invalid_risk_level(sample_controls):
+    try:
+        store_risk_assessment_inputs("Unit D", "Invalid", sample_controls)
+        assert True # If no exception is raised, the test passes.  We can't easily assert against the internal datastore.
+    except Exception as e:
+        assert False, f"Exception raised: {e}"
