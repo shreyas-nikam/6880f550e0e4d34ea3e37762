@@ -5,7 +5,7 @@ st.sidebar.divider()
 st.title("QuLab: Operational Risk Assessment Lifecycle Simulator")
 st.divider()
 st.markdown("""
-In this lab, we will explore the Operational Risk Assessment Lifecycle Simulator. This application provides an interactive simulation of the operational risk assessment lifecycle within a financial institution, as described in the "PRMIA Operational Risk Manager Handbook".
+In this lab, we will explore the Operational Risk Assessment Lifecycle Simulator. This application provides an interactive simulation of the operational risk assessment lifecycle within a financial institution.
 
 **Key Learning Outcomes:**
 *   Understand the key stages and flow of a robust operational risk assessment program.

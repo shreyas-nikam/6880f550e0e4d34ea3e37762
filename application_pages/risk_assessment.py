@@ -153,7 +153,7 @@ def run_risk_assessment():
         if unit_name and risk_description and controls:
             store_risk_assessment_inputs(unit_name, inherent_risk, controls, control_effectiveness, risk_description)
         else:
-            st.error("❌ Please fill in all required fields (Business Unit Name, Risk Description, and Controls)")
+            st.error("Please fill in all required fields (Business Unit Name, Risk Description, and Controls)")
 
     st.divider()
 
