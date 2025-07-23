@@ -1,261 +1,258 @@
 
-# Technical Specification for Jupyter Notebook: Operational Loss Event Analyzer (Basel Taxonomy)
+# Technical Specification: Operational Risk Assessment Lifecycle Simulator Jupyter Notebook
 
 ## 1. Notebook Overview
 
-### 1.1 Learning Goals
+This Jupyter Notebook provides an interactive simulation of the operational risk assessment lifecycle within a financial institution, drawing insights from the "PRMIA Operational Risk Manager Handbook" [1]. It aims to offer a practical, hands-on understanding of how operational risks are identified, assessed, controlled, and monitored in an iterative process.
 
-This Jupyter Notebook is designed to provide users with a practical understanding of operational risk analysis using the Basel taxonomy. Upon completion, users will be able to:
+### Learning Goals
 
-*   **Understand Operational Risk Categorization**: Comprehend the seven official Basel defined event types for operational loss events, as outlined in the PRMIA Operational Risk Manager Handbook [1, page 15].
-*   **Identify Trends and Patterns**: Learn to identify temporal trends and patterns in simulated operational loss data.
-*   **Explore Relationships and Impact**: Analyze correlations between different event types, their financial impact, and frequency.
-*   **Appreciate Data-Driven Risk Management**: Understand the importance of collecting, structuring, and analyzing operational risk data for effective risk management.
-*   **Grasp Risk Assessment Concepts**: Gain insights into fundamental risk concepts such as Inherent Risk, Control Effectiveness, and Residual Risk, including their conceptual relationships and practical mapping.
+*   Understand the key stages and the iterative flow of a robust operational risk assessment program.
+*   Learn how top-down risk identification informs and prioritizes bottom-up control assessment.
+*   Explore the interplay between inherent risk, control effectiveness, and the resulting residual risk through interactive scenarios.
+*   Recognize the importance of clear risk and control taxonomies, as well as consistent tracking, in effective operational risk management.
+*   Gain insights into data-driven approaches for understanding and visualizing operational risk trends and relationships.
 
-### 1.2 Expected Outcomes
+### Expected Outcomes
 
-By interacting with this notebook, users will achieve the following:
+Upon completion of this notebook, users will be able to:
+*   Articulate the sequential steps of an operational risk assessment lifecycle.
+*   Qualitatively assess inherent risks and control effectiveness for various operational risk scenarios.
+*   Apply a defined methodology to calculate residual risk based on inherent risk and control effectiveness.
+*   Interpret and analyze visualizations of residual risk, loss events, and near misses.
+*   Identify potential control gaps and propose basic action plans for risk mitigation.
+*   Understand the key insights contained in the uploaded document and supporting data.
 
-*   **Synthetic Data Generation**: Successfully generate and prepare a realistic synthetic dataset of operational loss events.
-*   **Data Validation and Exploration**: Perform basic data validation, cleaning, and generate descriptive statistics for the simulated loss events.
-*   **Interactive Data Filtering**: Utilize interactive widgets to dynamically filter and focus on specific subsets of the loss event data based on various criteria.
-*   **Visual Insights**: Generate a series of professional-quality visualizations (trend, aggregated comparison, and relationship plots) that reveal key insights into operational loss events.
-*   **Conceptual Understanding**: Solidify their understanding of how operational risk data can be structured and analyzed to inform risk management decisions, particularly in the context of Basel II.
+### Scope & Constraints
+
+*   The notebook must be executable end-to-end on a mid-spec laptop (8 GB RAM) in fewer than 5 minutes.
+*   Only open-source Python libraries available on PyPI may be used.
+*   All major steps will include both descriptive markdown cells and well-commented code cells, clearly explaining **what** is happening and **why**.
+*   The notebook will focus solely on the simulation and analysis, excluding deployment steps or platform-specific references.
 
 ## 2. Mathematical and Theoretical Foundations
 
-This section will introduce the core concepts of operational risk as defined by the Basel Accords, emphasizing the importance of a structured taxonomy and data-driven analysis.
+This section outlines the core concepts and mathematical logic underpinning the operational risk assessment simulation.
 
-### 2.1 Operational Risk Definition
+### 2.1 Operational Risk Assessment Lifecycle
 
-Operational risk is defined by Basel II as:
-$$ \text{Operational Risk} = \text{The risk of loss resulting from inadequate or failed internal processes, people, and systems, or from external events.} $$
-This definition includes legal risk but explicitly excludes strategic and reputational risk [1, page 13]. It highlights that "Operational risk is a data-driven discipline, and relies on development and maintenance of well-constructed hierarchies that allow for aggregation and analysis of loss trends" [1, page 16].
+The operational risk assessment lifecycle is an iterative process, as described in [1, "The Risk Assessment Lifecycle" diagram, page 21]. Key stages include:
+*   **Define Risk Assessment Units:** Establishing the organizational or process boundaries for risk assessment.
+*   **Top-down Workshops (Risk Identification):** Identifying and prioritizing inherent risks at a high level.
+*   **Identify Controls:** Linking identified risks to existing or proposed controls.
+*   **Process Reviews:** Mapping and analyzing processes to understand vulnerabilities and control points.
+*   **Control Substantiation:** Assessing the design and implementation effectiveness of controls.
+*   **Identify Issues:** Pinpointing control deficiencies or gaps.
+*   **Design Action Plans:** Developing plans to address identified issues.
+*   **Oversight & Monitoring:** Continuous tracking of the risk environment, losses, and action plan progress.
+*   **Management Validation:** Senior management review and approval of the risk profile.
 
-### 2.2 Basel Event Types
+### 2.2 Inherent Risk
 
-The Basel Committee on Banking Supervision (BCBS) has defined seven official categories for operational loss events, providing a standardized taxonomy for risk reporting and analysis. These categories are crucial for consistent data collection and comparative analysis across institutions. The seven event types are [1, page 15-16]:
+Inherent risk ($I_{risk}$) is defined as the level of risk before any controls or mitigations have been applied. It represents the raw risk exposure.
+In this simulation, inherent risk will be assessed qualitatively based on categories such as likelihood and impact. Users will assign qualitative levels:
+*   **High:** Significant potential impact and/or high probability of occurrence.
+*   **Medium:** Moderate potential impact and/or moderate probability of occurrence.
+*   **Low:** Minor potential impact and/or low probability of occurrence.
 
-1.  **Internal Fraud**: Losses due to acts intended to defraud, misappropriate property, or circumvent regulations, law, or company policy, involving at least one internal party.
-2.  **External Fraud**: Losses due to acts intended to defraud, misappropriate property, or circumvent the law by a third party.
-3.  **Employment Practices and Workplace Safety**: Losses arising from acts inconsistent with employment, health or safety laws or agreements, or from payment of personal injury claims or diversity/discrimination events.
-4.  **Clients, Products, and Business Practices**: Losses arising from an unintentional or negligent failure to meet a professional obligation to specific clients or from the nature/design of a product.
-5.  **Damage to Physical Assets**: Losses arising from loss or damage to physical assets from natural disasters or other events.
-6.  **Business Disruption and System Failures**: Losses arising from disruption of business or system failures (e.g., IT systems, hardware, software, telecommunications).
-7.  **Execution, Delivery, and Process Management**: Losses from failed transaction processing or process management, relations with trade counterparties and vendors, data entry errors, etc.
+### 2.3 Control Effectiveness
 
-### 2.3 Risk Assessment Concepts
+Control effectiveness ($C_{eff}$) is the degree to which a control successfully mitigates or detects a risk. Users will assess controls based on simulated scenarios, considering attributes like:
+*   **Preventative vs. Detective:** Preventative controls aim to stop an event from occurring, while detective controls aim to identify an event after it has occurred.
+*   **Key vs. Non-Key:** Key controls are primary mitigators, while non-key controls are supplementary.
+*   **Manual vs. Automated:** Manual controls rely on human intervention, automated controls are system-driven.
 
-Understanding operational risk involves assessing various risk components:
+The effectiveness will be rated qualitatively:
+*   **Effective:** The control is well-designed and consistently implemented to mitigate the associated risk.
+*   **Partially Effective:** The control has design or implementation weaknesses, or its effectiveness is inconsistent.
+*   **Ineffective:** The control is poorly designed, not implemented, or consistently fails to mitigate the associated risk.
 
-*   **Inherent Risk (IR)**: This is the level of risk before any controls or mitigation strategies are applied. It is often described as "risk without controls" [1, page 37]. It represents the raw risk exposure of an activity or process.
-*   **Control Effectiveness (CE)**: This refers to how well the existing controls are designed and implemented to mitigate the inherent risks. Controls can be preventative (preventing an event from occurring) or detective (detecting an event after it occurs) [1, page 33].
-*   **Residual Risk (RR)**: This is the risk that remains after controls have been implemented and are operating. Conceptually, it can be thought of as:
-    $$ \text{Residual Risk} = \text{Inherent Risk} - \text{Impact of Controls} $$
-    However, the PRMIA Handbook explicitly states that this is "not a subtractive exercise" [1, page 38]. Instead, residual risk is typically determined through a qualitative mapping or rating scale that combines Inherent Risk and Control Effectiveness ratings. The notebook will adopt this matrix-based approach for determining residual risk, which is a common practice in operational risk management.
+### 2.4 Residual Risk Calculation
 
-    For this lab, we will use the following qualitative mapping, adapted from the PRMIA Handbook [1, page 38]:
+Residual risk ($R_{risk}$) is the remaining risk after controls have been applied and are considered effective. The calculation is not a simple subtraction but a mapping function based on lookup tables, as illustrated in [1, "Two Sample Approaches for Residual Risk Rating", page 38].
 
-    **Residual Risk Chart (Standard Approach)**
-    | Inherent Risk   | Control Effectiveness: Effective | Control Effectiveness: Partially Effective | Control Effectiveness: Ineffective |
-    |:----------------|:---------------------------------|:-----------------------------------------|:---------------------------------|
-    | High            | Low                              | Medium                                   | High                             |
-    | Medium          | Low                              | Medium                                   | Medium                           |
-    | Low             | Low                              | Low                                      | Low                              |
+The general form of the relationship is:
+$$R_{risk} = f(I_{risk}, C_{eff})$$
+where $I_{risk}$ is the Inherent Risk and $C_{eff}$ is the Control Effectiveness.
 
-    **Residual Risk Chart (Weighted Approach for High Legal/Regulatory Risks)**
-    *This approach applies additional weighting to control deficiencies, leading to potentially higher residual risk ratings, especially when violations of law are a concern.*
-    | Inherent Risk   | Control Effectiveness: Effective | Control Effectiveness: Partially Effective | Control Effectiveness: Ineffective |
-    |:----------------|:---------------------------------|:-----------------------------------------|:---------------------------------|
-    | High            | Low                              | Medium                                   | High                             |
-    | Medium          | Low                              | Medium                                   | High                             |
-    | Low             | Low                              | Low                                      | Medium                           |
+Two sample approaches for mapping inherent risk and control effectiveness to residual risk are provided:
 
-    The notebook will illustrate how this mapping allows for a more nuanced understanding of remaining risk, acknowledging that even low inherent risks can become significant residual risks if controls are ineffective, particularly in highly regulated areas.
+**Approach 1: Residual Risk Chart (Simple)**
+
+| Inherent Risk | Control Effectiveness: Effective | Control Effectiveness: Partially Effective | Control Effectiveness: Ineffective |
+| :------------ | :------------------------------- | :--------------------------------------- | :------------------------------- |
+| High          | Low                              | Medium                                   | High                             |
+| Medium        | Low                              | Medium                                   | Medium                           |
+| Low           | Low                              | Low                                      | Low                              |
+
+**Approach 2: Residual Risk Chart with Control Weighting (Recommended when risk is high for violations of law)**
+
+| Inherent Risk | Control Effectiveness: Effective | Control Effectiveness: Partially Effective | Control Effectiveness: Ineffective |
+| :------------ | :------------------------------- | :--------------------------------------- | :------------------------------- |
+| High          | Low                              | Medium                                   | High                             |
+| Medium        | Low                              | Medium                                   | High                             |
+| Low           | Low                              | Medium                                   | Medium                           |
+
+The function $f$ in this context performs a lookup within these matrices. For instance, if $I_{risk} = \text{High}$ and $C_{eff} = \text{Effective}$, then using Approach 1, $R_{risk} = \text{Low}$.
+
+### 2.5 Issue Management
+
+Issues arise from ineffective controls or identified control gaps. An issue management process involves:
+*   Identifying the issue and its root cause.
+*   Designing an action plan with specific steps, ownership, and deadlines.
+*   Monitoring progress and escalating delays.
+*   Implementing compensating controls if necessary.
+
+### 2.6 Dynamic Data Simulation
+
+To support trend and aggregated comparison visualizations, synthetic data for "loss events" and "near misses" will be generated. This data will include:
+*   **Loss Events:** Incidents resulting in financial or non-financial loss.
+*   **Near Misses:** Incidents that could have resulted in loss but were mitigated or avoided.
+
+The data will incorporate realistic numeric (e.g., loss amount, recovery time), categorical (e.g., business unit, risk category, control breach type), and time-series fields (e.g., timestamp of event).
 
 ## 3. Code Requirements
 
-This section outlines the logical flow, necessary libraries, input/output, and algorithms for the Jupyter Notebook.
+This section specifies the expected libraries, input/output, algorithms, and visualizations for the Jupyter Notebook.
 
-### 3.1 Logical Flow
+### 3.1 Expected Libraries
 
-The notebook will follow a clear, step-by-step logical flow:
-
-1.  **Introduction and Setup**:
-    *   Markdown cell: Welcome and brief overview of the notebook's purpose.
-    *   Code cell: Import necessary libraries.
-    *   Code cell: Define global parameters (e.g., number of synthetic records, date range for generation).
-2.  **Synthetic Data Generation**:
-    *   Markdown cell: Explain the need for synthetic data and its characteristics.
-    *   Code cell: Implement a function to generate synthetic operational loss data.
-    *   Code cell: Call the generation function and display the first few rows and basic info.
-3.  **Data Validation and Preprocessing**:
-    *   Markdown cell: Describe the importance of data validation.
-    *   Code cell: Implement data validation checks (column names, types, missing values, uniqueness).
-    *   Code cell: Perform any necessary data type conversions (e.g., 'Date' to datetime, 'Loss_Amount' to numeric).
-    *   Code cell: Display summary statistics for key numeric columns.
-4.  **Interactive Filtering and Analysis Setup**:
-    *   Markdown cell: Introduce interactive filtering to allow users to explore subsets of data.
-    *   Code cell: Set up interactive widgets (dropdowns for `Basel_Event_Type`, sliders for `Date_Range` and `Loss_Amount_Range`).
-    *   Code cell: Define a function that applies filters based on widget selections and updates the analysis.
-5.  **Data Analysis and Visualization**:
-    *   Markdown cell: Explain the types of insights each visualization aims to provide.
-    *   Code cell: Implement functions for each core visualization.
-    *   Code cell: Display the interactive analysis output, including plots and summary statistics, driven by the filtering function.
-6.  **Summary of Findings and Conclusion**:
-    *   Markdown cell: Discuss key insights derived from the analysis.
-    *   Markdown cell: Concluding remarks and next steps.
-7.  **References**:
-    *   Markdown cell: List all external datasets or libraries used, crediting the PRMIA Handbook.
-
-### 3.2 Expected Libraries
-
-Only open-source Python libraries from PyPI will be used.
-
-*   **`pandas`**: For data manipulation, DataFrame operations, and data loading/saving.
-*   **`numpy`**: For numerical operations, especially in synthetic data generation.
-*   **`faker`**: For generating realistic synthetic categorical and text data.
+The following open-source Python libraries (from PyPI) are expected for data handling, numerical operations, user interaction, and visualization:
+*   **`pandas`**: For data manipulation, loading, and structuring of synthetic data.
+*   **`numpy`**: For numerical operations, especially for synthetic data generation.
 *   **`matplotlib.pyplot`**: For static plotting.
-*   **`seaborn`**: For enhanced statistical visualizations, built on Matplotlib.
-*   **`plotly.express` / `plotly.graph_objects`**: For interactive visualizations (preferred). A static fallback will be provided.
-*   **`ipywidgets`**: For creating interactive user controls like dropdowns and sliders.
+*   **`seaborn`**: For enhanced statistical data visualization.
+*   **`ipywidgets`**: For creating interactive user interface elements (sliders, dropdowns, text inputs, buttons).
+*   **`datetime` / `random`**: (Standard Python libraries) For generating realistic time-series and random data.
 
-### 3.3 Input/Output Expectations
+### 3.2 Input/Output Expectations
 
-*   **Input**:
-    *   The primary input will be a **synthetic dataset** generated programmatically within the notebook. This ensures self-containment and reproducibility.
-    *   The `generate_synthetic_loss_data` function will accept parameters (e.g., `num_records`) to control the dataset size.
-    *   **Optional Sample Data**: A lightweight sample dataset (e.g., a small CSV or JSON file, ≤ 5 MB) will be provided as an optional input. This allows the notebook to run without re-generating data, serving as a static fallback or for quick demonstrations.
-*   **Output**:
-    *   **Validated DataFrame**: A `pandas.DataFrame` object after validation and cleaning steps.
-    *   **Summary Statistics**: Tables or print statements displaying total loss, average loss per event type, event counts, and basic descriptive statistics for numeric fields.
-    *   **Visualizations**:
-        *   Interactive plots (if `ipywidgets` and `plotly` are supported in the user's environment).
-        *   Static image files (e.g., PNG) generated and saved for each plot, serving as a fallback for environments where interactivity is not supported.
-    *   **Console Output**: Informative messages, validation logs, and progress updates.
+#### 3.2.1 Inputs
 
-### 3.4 Algorithms or Functions to be Implemented (without code)
+The notebook will primarily rely on user inputs and dynamically generated synthetic data.
+*   **User Inputs (via `ipywidgets`):**
+    *   **Risk Assessment Unit Definition:** Text inputs for unit names, dropdowns for type (e.g., "Business Line", "Process Based").
+    *   **Inherent Risk Identification:** Dropdowns (e.g., "Internal Fraud", "System Failure"), qualitative sliders/dropdowns (High, Medium, Low) for perceived inherent risk.
+    *   **Control Definition:** Text inputs for control descriptions, dropdowns for attributes (Preventative/Detective, Key/Non-Key, Manual/Automated), qualitative sliders/dropdowns (Effective, Partially Effective, Ineffective) for control effectiveness.
+    *   **Residual Risk Calculation Method:** Radio buttons or dropdown to select "Approach 1 (Simple)" or "Approach 2 (Weighted)".
+    *   **Issue Tracking:** Text areas for "Issue Description" and "Action Plan".
+    *   **Synthetic Data Parameters:** Sliders or text inputs for controlling scale/range of generated data (e.g., number of events, average loss amount, date range).
+    *   **Visualization Parameters:** Dropdowns/sliders for filtering data or adjusting plot aesthetics.
+*   **Optional Sample Dataset:**
+    *   A lightweight, pre-generated sample CSV file (≤ 5 MB) for loss events and near misses.
+    *   Expected columns: `Timestamp` (datetime), `Business_Unit` (categorical), `Risk_Category` (categorical, e.g., "Internal Fraud", "System Failure"), `Loss_Amount` (numeric), `Near_Miss_Flag` (boolean), `Control_Breach_Type` (categorical, e.g., "Process", "People", "System", "External").
+    *   The notebook should confirm expected column names, data types, and primary-key uniqueness (e.g., `Timestamp` + `Business_Unit` for unique event).
+    *   It should assert no missing values in critical fields (`Loss_Amount`, `Risk_Category`).
+    *   Log summary statistics for numeric columns.
 
-1.  **`generate_synthetic_loss_data(num_records)`**
-    *   **Purpose**: Creates a `pandas.DataFrame` representing synthetic operational loss events.
-    *   **Input**: `num_records` (integer, number of rows to generate).
-    *   **Output**: `pandas.DataFrame` with columns:
-        *   `Event_ID`: Unique identifier (e.g., UUID or sequential integer).
-        *   `Date`: Time-series data (random dates within a specified range).
-        *   `Basel_Event_Type`: Categorical, from the 7 Basel types (e.g., "Internal Fraud", "System Failure").
-        *   `Loss_Amount`: Numeric, representing financial impact (e.g., float, potentially skewed distribution).
-        *   `Impact_Category`: Categorical (e.g., "Financial", "Reputational", "Regulatory").
-        *   `Contributing_Factors`: Text/categorical (brief descriptions or categories of contributing factors).
-    *   **Implementation Note**: Use `numpy.random` for numeric distributions, `pandas` for date ranges, and `faker` for more diverse categorical/text entries. Ensure realistic distributions for `Loss_Amount` and `Date`.
+#### 3.2.2 Outputs
 
-2.  **`validate_data(df)`**
-    *   **Purpose**: Confirms data integrity and readiness for analysis.
-    *   **Input**: `df` (pandas DataFrame).
-    *   **Output**: Boolean (True if valid, False otherwise) and prints validation results/warnings.
-    *   **Checks**:
-        *   Expected column names presence.
-        *   Correct data types for key columns (`Date` as datetime, `Loss_Amount` as numeric).
-        *   Uniqueness of `Event_ID` as primary key.
-        *   Absence of missing values in critical fields (`Event_ID`, `Date`, `Basel_Event_Type`, `Loss_Amount`).
-        *   Log summary statistics for numeric columns (mean, median, standard deviation).
+*   **Interactive Tables:** Display of user-defined inherent risks, controls, and calculated residual risks.
+*   **Visualizations:** Charts and plots as specified in section 3.4.
+*   **Summary Statistics:** For generated or loaded synthetic data.
+*   **Textual Feedback:** Messages confirming user inputs, calculation results, or data validation outputs.
 
-3.  **`filter_data(df, event_type=None, date_range=None, loss_amount_range=None)`**
-    *   **Purpose**: Filters the DataFrame based on user selections from interactive widgets.
-    *   **Input**:
-        *   `df` (pandas DataFrame).
-        *   `event_type` (list of strings or `None`).
-        *   `date_range` (tuple of datetime or `None`).
-        *   `loss_amount_range` (tuple of (min, max) float or `None`).
-    *   **Output**: Filtered `pandas.DataFrame`.
+### 3.3 Algorithms or Functions to be Implemented (without code)
 
-4.  **`calculate_summary_statistics(df)`**
-    *   **Purpose**: Computes key statistical measures for the filtered data.
-    *   **Input**: `df` (pandas DataFrame).
-    *   **Output**: Dictionary or DataFrame containing:
-        *   Total `Loss_Amount`.
-        *   Average `Loss_Amount` per event.
-        *   Event count per `Basel_Event_Type`.
-        *   Average `Loss_Amount` per `Basel_Event_Type`.
+#### 3.3.1 Data Generation Functions
 
-5.  **`plot_trend(df, title, x_label, y_label)`**
-    *   **Purpose**: Visualizes loss trends over time.
-    *   **Input**: `df` (filtered DataFrame), plot metadata.
-    *   **Output**: A line or area chart showing `Loss_Amount` over time, segmented by `Basel_Event_Type`.
-    *   **Visualization Details**:
-        *   X-axis: `Date` (aggregated by month/quarter/year).
+*   **`generate_synthetic_loss_data(num_events, start_date, end_date, business_units, risk_categories)`:**
+    *   Purpose: Creates a synthetic dataset of operational loss events and near misses.
+    *   Inputs: Number of events, date range, lists of possible business units and risk categories.
+    *   Output: Pandas DataFrame with `Timestamp`, `Business_Unit`, `Risk_Category`, `Loss_Amount`, `Near_Miss_Flag`, `Control_Breach_Type`, `Recovery_Time_Days` (numeric).
+    *   Logic: Randomly generates values for each field, ensuring realistic distributions (e.g., log-normal for `Loss_Amount`).
+
+#### 3.3.2 Risk Assessment Logic Functions
+
+*   **`calculate_residual_risk(inherent_risk_level, control_effectiveness_level, approach)`:**
+    *   Purpose: Determines residual risk based on inherent risk and control effectiveness using a lookup table approach.
+    *   Inputs: String representing `inherent_risk_level` ('High', 'Medium', 'Low'), string representing `control_effectiveness_level` ('Effective', 'Partially Effective', 'Ineffective'), and string `approach` ('Simple', 'Weighted').
+    *   Output: String representing the `residual_risk_level` ('High', 'Medium', 'Low').
+    *   Logic: Implements the lookup logic from the tables provided in Section 2.4.
+
+*   **`store_risk_assessment_inputs(unit_name, inherent_risk, controls)`:**
+    *   Purpose: Stores user-defined risk assessment details in an in-memory data structure (e.g., a list of dictionaries or a DataFrame).
+    *   Inputs: `unit_name` (string), `inherent_risk` (string), and a list of `control` dictionaries (each containing `description`, `type`, `effectiveness`).
+    *   Output: Updates an internal data store.
+
+#### 3.3.3 Data Validation Functions
+
+*   **`validate_dataframe(df, expected_columns, expected_dtypes, critical_columns)`:**
+    *   Purpose: Checks for expected column names, data types, and missing values in critical fields.
+    *   Inputs: DataFrame `df`, dictionary `expected_columns` (column name: expected dtype), list `critical_columns`.
+    *   Output: Boolean (True if valid, False otherwise), and logs detailed validation results/warnings.
+
+### 3.4 Visualizations
+
+Visualizations will adhere to color-blind-friendly palettes (e.g., from Seaborn's default palettes), use font size ≥ 12 pt, and include clear titles, labeled axes, and legends. Interactivity will be enabled where supported (e.g., Matplotlib's interactive backend, or via `ipywidgets` refreshing plots), with static PNG fallbacks.
+
+#### 3.4.1 Core Visuals
+
+1.  **Trend Plot (Line or Area Chart) for Loss Events over Time:**
+    *   Purpose: Visualize the historical pattern of simulated loss events or total loss amounts.
+    *   Data Source: Synthetic loss event data.
+    *   X-axis: Time (e.g., `Timestamp` aggregated by month/quarter).
+    *   Y-axis: Total `Loss_Amount` or Count of events.
+    *   Segmentation: Option to segment by `Business_Unit` or `Risk_Category` using different colored lines/areas.
+    *   Interactivity: Slider for date range selection, dropdown for aggregation level (daily, weekly, monthly).
+
+2.  **Relationship Plot (Scatter Plot) for Loss Amount vs. Recovery Time:**
+    *   Purpose: Examine potential correlations between the severity of a loss event and the time taken to recover.
+    *   Data Source: Synthetic loss event data.
+    *   X-axis: `Recovery_Time_Days`.
+    *   Y-axis: `Loss_Amount` (potentially on a logarithmic scale if data is skewed).
+    *   Segmentation: Color-code points by `Risk_Category` or `Control_Breach_Type`.
+    *   Annotations: Optionally highlight key events (e.g., highest loss events).
+
+3.  **Aggregated Comparison (Bar Chart or Heatmap) for Categorical Insights:**
+    *   **Bar Chart: Total Loss by Risk Category / Business Unit:**
+        *   Purpose: Compare total loss amounts across different operational risk categories or business units.
+        *   Data Source: Synthetic loss event data.
+        *   X-axis: Categorical variable (e.g., `Risk_Category` or `Business_Unit`).
         *   Y-axis: Sum of `Loss_Amount`.
-        *   Lines/Areas: Different colors for each `Basel_Event_Type`.
-        *   Interactive features (zoom, pan, hover tooltips) if using `plotly`.
-        *   Static PNG fallback if interactivity is not available.
+        *   Sorting: Bars sorted in descending order of `Loss_Amount`.
+    *   **Heatmap: Residual Risk Matrix:**
+        *   Purpose: Visually represent the calculated residual risk levels for user-defined scenarios.
+        *   Data Source: Programmatically generated matrix based on user's inherent risk and control effectiveness inputs.
+        *   Axes: Inherent Risk (rows), Control Effectiveness (columns).
+        *   Cells: Color-coded based on the resulting `Residual_Risk_Level` (e.g., Red for High, Amber for Medium, Green for Low).
+        *   Labels: Display the residual risk level string (High, Medium, Low) within each cell.
+        *   Interactivity: Plot dynamically updates based on user selection of the residual risk calculation `approach` (Simple or Weighted).
 
-6.  **`plot_aggregated_comparison(df, title, x_label, y_label)`**
-    *   **Purpose**: Compares total or average loss across categorical dimensions.
-    *   **Input**: `df` (filtered DataFrame), plot metadata.
-    *   **Output**:
-        *   **Option 1 (Bar Chart)**: A bar chart showing total `Loss_Amount` per `Basel_Event_Type`.
-            *   X-axis: `Basel_Event_Type`.
-            *   Y-axis: Total `Loss_Amount`.
-            *   Bars: Ordered by `Loss_Amount` (descending).
-        *   **Option 2 (Heatmap)**: A heatmap showing `Loss_Amount` by `Basel_Event_Type` and `Impact_Category`.
-            *   Rows: `Basel_Event_Type`.
-            *   Columns: `Impact_Category`.
-            *   Color intensity: Represents aggregated `Loss_Amount`.
-    *   **Visualization Details**: Clear labels, legends, and color-blind friendly palette. Static PNG fallback.
+#### 3.4.2 Supplementary Visuals
 
-7.  **`plot_relationship(df, title, x_label, y_label)`**
-    *   **Purpose**: Explores the relationship between `Loss_Amount` and event frequency.
-    *   **Input**: `df` (filtered DataFrame), plot metadata.
-    *   **Output**: A scatter plot.
-    *   **Visualization Details**:
-        *   X-axis: `Frequency` (e.g., number of events within a period or per type).
-        *   Y-axis: `Loss_Amount` (e.g., average or max).
-        *   Points: Colored by `Impact_Category`.
-        *   Reveals clusters of high-frequency/low-impact vs. low-frequency/high-impact events.
-        *   Clear labels, legends, and color-blind friendly palette. Static PNG fallback.
-
-8.  **`create_interactive_filters(df)`**
-    *   **Purpose**: Sets up and displays `ipywidgets` for user interaction.
-    *   **Input**: `df` (initial DataFrame to determine filter options).
-    *   **Output**: Interactive controls (dropdowns, sliders) linked to the `filter_data` and plotting functions, triggering updates upon user input.
-    *   **Details**:
-        *   Dropdown for `Basel_Event_Type` (multi-select allowed).
-        *   Date range slider/selector for `Date`.
-        *   Numeric range slider for `Loss_Amount`.
-        *   Inline help text/tooltips for each control.
-
-### 3.5 Markdown Explanations and Code Comments
-
-Each major step in the notebook will include:
-
-*   **Narrative Cells (Markdown)**: Brief explanations of *what* is being done in the subsequent code cell(s) and *why* it is important for the analysis.
-*   **Code Comments**: Inline comments within code cells to explain specific lines or blocks of code.
+*   **Tables of User Inputs:** Clearly display all user-defined inherent risks, controls, and their assessed effectiveness in a tabular format.
+*   **Issue Tracking Table:** A simple table listing identified issues and their associated action plans, owners, and status.
 
 ## 4. Additional Notes or Instructions
 
 ### 4.1 Assumptions
 
-*   The user has a basic understanding of Python and Jupyter notebooks.
-*   The generated synthetic data, while realistic in its structure, is sufficient for demonstrating the concepts and analytical techniques.
-*   The Basel Taxonomy (7 event types) from the PRMIA Handbook is the primary classification system for operational loss events.
+*   Users have a basic understanding of Jupyter Notebooks and Python.
+*   The qualitative risk levels (High, Medium, Low) for inherent and residual risk, and effectiveness levels (Effective, Partially Effective, Ineffective) are ordinal and can be mapped numerically for internal calculations if needed (e.g., 3, 2, 1).
+*   The "PRMIA Operational Risk Manager Handbook" serves as the primary theoretical reference for concepts and the residual risk lookup logic.
+*   The synthetic data generated will be plausible but not necessarily representative of any specific real-world financial institution's loss data.
 
 ### 4.2 Constraints
 
-*   **Execution Environment**: The notebook must execute end-to-end on a mid-spec laptop (8 GB RAM).
-*   **Performance**: Total execution time for the entire notebook should be under 5 minutes.
-*   **Libraries**: Only open-source Python libraries available on PyPI may be used. No proprietary or non-standard libraries are permitted.
-*   **No Code Implementation**: Python code itself should not be written in this specification document. Only descriptions of functions and algorithms are required.
-*   **No Deployment Steps**: The specification should not include any details related to deployment or specific platform integration (e.g., Streamlit, Dash).
+*   No external data sources beyond the optional sample CSV should be required for full notebook execution.
+*   All interactive elements must use `ipywidgets` to avoid platform-specific dependencies.
+*   The notebook environment is assumed to support `ipywidgets` for full interactivity. A fallback static visualization (saved PNG) will be provided for environments where interactivity might be limited.
 
 ### 4.3 Customization Instructions
 
-*   **Synthetic Data Parameters**: Users should be able to easily modify parameters for synthetic data generation (e.g., number of records, date range for events, distribution characteristics for loss amounts) at the beginning of the notebook.
-*   **Interactive Analysis Settings**: The `ipywidgets` will provide interactive controls (sliders, dropdowns) for users to filter the data by `Basel_Event_Type`, `Date_Range`, and `Loss_Amount_Range`. These controls will allow learners to rerun analyses with different settings.
-*   **Plotting Style**: The notebook will adopt a color-blind-friendly palette. All plots must include clear titles, labeled axes, and legends. Font size for all plot elements should be equal to or greater than 12pt.
-*   **Inline Help**: Inline help text or tooltips will be provided for all interactive controls to describe their functionality.
-*   **Static Fallback**: For environments that do not fully support interactive plotting libraries, a mechanism to save static PNG images of all core visualizations will be included.
+*   **Risk Scenarios:** Users can define custom inherent risks and controls using the provided input fields, allowing them to simulate specific scenarios relevant to their interests.
+*   **Synthetic Data Parameters:** Users can adjust parameters for synthetic data generation (e.g., number of events, date range, average loss amount) to explore different scales of simulated operational risk.
+*   **Visualization Settings:** Users will be able to modify plot titles, axis labels, and colors where interactive controls are provided.
+*   **Residual Risk Logic:** The notebook will allow users to switch between the "Simple" and "Weighted" residual risk calculation approaches as per the PRMIA Handbook.
 
-### 4.4 References
+### 4.4 User Interaction Guidelines
 
-*   **[1] PRMIA Operational Risk Manager Handbook**, Published by PRMIA Publications, Wilmington, DE, Updated November, 2015. Document identifier: `PRMIA Operational Risk Manager Handbook.pdf`. This handbook defines operational risk and outlines the seven official Basel defined event types, and discusses risk assessment methodologies.
-*   **Python Libraries**: `pandas`, `numpy`, `faker`, `matplotlib`, `seaborn`, `plotly`, `ipywidgets`.
+*   **Parameters:** Sliders, dropdowns, and text inputs will be provided for all customizable settings.
+*   **Inline Help:** Each control will have inline help text or tooltips to describe its purpose and impact on the analysis. This can be achieved using `ipywidgets.HTML` or `Label` elements adjacent to controls.
+*   **Clear Prompts:** Input cells will be preceded by clear markdown instructions and prompts for user interaction.
+
+### 4.5 References
+
+[1] PRMIA Operational Risk Manager Handbook, Published by PRMIA Publications, Wilmington, DE, Updated November, 2015. Document identifier: `PRMIA Operational Risk Manager Handbook.pdf`. This handbook provides a comprehensive overview of operational risk management, including the risk assessment lifecycle, taxonomies, and control assessment methodologies.
+
