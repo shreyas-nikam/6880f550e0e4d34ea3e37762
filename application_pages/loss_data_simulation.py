@@ -32,43 +32,21 @@ def generate_synthetic_loss_data(num_events, start_date, end_date, business_unit
     df = pd.DataFrame(data, columns=["Timestamp", "Business_Unit", "Risk_Category", "Loss_Amount", "Near_Miss_Flag", "Control_Breach_Type", "Recovery_Time_Days"])
     return df.sort_values('Timestamp')
 
-def run_overview_loss_simulation():
-    st.header("Overview & Loss Data Simulation")
-    
-    # Enhanced Overview Section
-    st.markdown("""
-    ## Application Overview
-    
-    This application simulates the operational risk assessment lifecycle, providing an interactive and educational experience for understanding risk management in financial institutions.
-
-    ### Lab Instructions
-    
-    **Step 1: Generate Loss Data**
-    1. Configure simulation parameters below (number of events, date range, business units)
-    2. Click "Generate Loss Data" to create synthetic operational loss events
-    3. Review the generated data and visualizations
-    
-    **Step 2: Analyze Risk Patterns**
-    1. Examine the loss trends over time
-    2. Compare loss amounts across business units
-    3. Analyze the relationship between recovery time and loss severity
-    
-    **Step 3: Perform Risk Assessment**
-    1. Navigate to the "Risk Assessment" page
-    2. Define business units and their inherent risk levels
-    3. Assess control effectiveness and calculate residual risk
-    
-    ### Learning Objectives
-    - **Risk Identification**: Learn how operational losses are categorized and tracked
-    - **Data Analysis**: Understand patterns in operational risk data
-    - **Risk Assessment**: Practice calculating residual risk from inherent risk and controls
-    - **Risk Monitoring**: Observe how risk metrics change over time
-    """)
-    
-    st.divider()
-    
+def run_overview_loss_simulation():    
     # Loss Data Simulation Section
     st.header("Loss Data Simulation")
+    
+    # Add instructions before the input controls
+    st.markdown("""
+    ### Simulation Instructions
+    
+    **Configure Your Simulation:**
+    1. **Number of Events**: Choose how many loss events to generate (100-10,000). More events provide better trend visualization.
+    2. **Date Range**: Select the time period for your simulation data.
+    3. **Business Units**: Select which business units to include in the simulation.
+    4. **Risk Categories**: Choose the types of operational risks to simulate.
+    5. Click **"Generate Loss Data"** to create your synthetic dataset.
+    """)
 
     # Initialize session state variable
     if 'loss_data' not in st.session_state:
@@ -78,12 +56,12 @@ def run_overview_loss_simulation():
     col1, col2 = st.columns(2)
     
     with col1:
-        num_events = st.number_input("Number of Loss Events to Simulate", min_value=100, max_value=10000, value=1000, help="More events provide better trend visualization")
+        num_events = st.number_input("Number of Loss Events to Simulate", min_value=100, max_value=10000, value=1000)
         start_date, end_date = st.date_input("Simulation Date Range", value=[pd.to_datetime('2023-01-01'), pd.to_datetime('2023-12-31')])
     
     with col2:
-        business_units = st.multiselect("Select Business Units", options=['Investment Banking', 'Retail Banking', 'Asset Management', 'Operations'], default=['Investment Banking', 'Retail Banking'], help="Choose business units to include in simulation")
-        risk_categories = st.multiselect("Select Risk Categories", options=['Internal Fraud', 'External Fraud', 'System Failures', 'Process Errors'], default=['Internal Fraud', 'System Failures'], help="Select types of operational risks to simulate")
+        business_units = st.multiselect("Select Business Units", options=['Investment Banking', 'Retail Banking', 'Asset Management', 'Operations'], default=['Investment Banking', 'Retail Banking'])
+        risk_categories = st.multiselect("Select Risk Categories", options=['Internal Fraud', 'External Fraud', 'System Failures', 'Process Errors'], default=['Internal Fraud', 'System Failures'])
 
     if st.button("Generate Loss Data", type="primary"):
         with st.spinner("Generating synthetic loss data..."):

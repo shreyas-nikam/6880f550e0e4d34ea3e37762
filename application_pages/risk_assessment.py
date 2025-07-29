@@ -70,59 +70,32 @@ def store_risk_assessment_inputs(unit_name, inherent_risk, controls, control_eff
 def run_risk_assessment():
     st.header("Risk Assessment & Management")
 
-    # Enhanced Overview Section
-    st.markdown("""
-    ## Risk Assessment Instructions
-
-    This page allows you to perform comprehensive operational risk assessments for different business units. Follow the steps below to conduct your assessment:
-
-    ### How to Use This Tool
-    
-    **Step 1: Define Business Units**
-    - Enter a meaningful business unit name (e.g., "Trading Desk", "Loan Processing", "IT Operations")
-    - Describe the key risk you're assessing for this unit
-    - Select the inherent risk level based on the unit's exposure
-    
-    **Step 2: Assess Controls**
-    - List the controls in place (e.g., "Dual authorization, System monitoring, Daily reconciliation")
-    - Evaluate how effective these controls are in mitigating the risk
-    
-    **Step 3: Review Results**
-    - View the calculated residual risk
-    - Analyze the risk portfolio across all business units
-    - Use the heatmap to understand risk patterns
-
-    ### Risk Level Definitions
-
-    **Inherent Risk Levels:**
-    - **High**: Significant potential for major operational losses (> $1M)
-    - **Medium**: Moderate potential for operational losses ($100K - $1M)
-    - **Low**: Limited potential for operational losses (< $100K)
-    
-    **Control Effectiveness:**
-    - **Effective**: Controls consistently prevent/detect issues (>90% effectiveness)
-    - **Partially Effective**: Controls sometimes fail (60-90% effectiveness)
-    - **Ineffective**: Controls frequently fail or don't exist (<60% effectiveness)
-    """)
-    
-    st.divider()
-
     # Initialize session state variables
     if 'risk_assessments' not in st.session_state:
         st.session_state.risk_assessments = []
 
-    # Input Section
+    # Input Section with contextual instructions
     st.subheader("Define Risk Assessment")
+    
+    # Add brief overview before the form
+    st.markdown("""
+    **Quick Guide:** Enter your business unit details, assess the inherent risk level, describe your controls, 
+    and evaluate their effectiveness to calculate residual risk.
+    """)
     
     col1, col2 = st.columns(2)
     
     with col1:
+        st.markdown("##### **Step 1: Define Business Unit & Risk**")
         unit_name = st.text_input(
             "Business Unit Name", 
             placeholder="e.g., Trading Operations, Loan Processing, IT Support",
             help="Enter a descriptive name for the business unit you're assessing"
         )
         
+        st.markdown("**Risk Level Guidelines:**")
+        st.markdown("1. **High**: Major operational losses potential (> $1M) \n 2. **Medium**: Moderate losses potential ($100K - $1M) \n 3. **Low**: Limited losses potential (< $100K)")
+
         inherent_risk = st.selectbox(
             "Inherent Risk Level", 
             options=['High', 'Medium', 'Low'],
@@ -136,11 +109,15 @@ def run_risk_assessment():
         )
     
     with col2:
+        st.markdown("##### **Step 2: Assess Controls & Effectiveness**")
         controls = st.text_area(
             "Controls in Place", 
             placeholder="e.g., Dual authorization, Real-time monitoring, Daily reconciliation, Supervisor review",
             help="List the controls that mitigate this risk (comma-separated)"
         )
+        
+        st.markdown("**Control Effectiveness Guidelines:**")
+        st.markdown("• **Effective**: Consistently prevent/detect issues (>90% effectiveness)  \n• **Partially Effective**: Sometimes fail (60-90% effectiveness)  \n• **Ineffective**: Frequently fail or don't exist (<60% effectiveness)")
         
         control_effectiveness = st.selectbox(
             "Control Effectiveness Level", 
