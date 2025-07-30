@@ -1,6 +1,3 @@
-Here's a comprehensive `README.md` file for your Streamlit application lab project.
-
----
 
 # QuLab: Operational Risk Assessment Lifecycle Simulator
 
@@ -171,9 +168,8 @@ This project is licensed under the MIT License - see the `LICENSE` file for deta
 
 For any questions or inquiries, please contact:
 
-*   **Name:** Your Name / QuantUniversity
-*   **Email:** your.email@example.com / info@qusandbox.com
-*   **GitHub:** [Your GitHub Profile](https://github.com/your-username)
+*   **Name:** QuantUniversity
+*   **Email:** info@qusandbox.com
 *   **Website:** [www.quantuniversity.com](https://www.quantuniversity.com/) (as per the logo)
 
 ---
